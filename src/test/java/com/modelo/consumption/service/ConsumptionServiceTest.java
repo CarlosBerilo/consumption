@@ -87,4 +87,32 @@ public class ConsumptionServiceTest {
         verify(consumptionAdapter).deleteConsumption(SKU_CONSUMPTION);
     }
 
+    @Test
+    @DisplayName("[method=consumptionCredit] When consumption Credit skuConsumption não encontrado")
+    void test_consumptionCredit_error(){
+        when(consumptionAdapter.getConsumption(Mockito.anyString())).thenReturn(Optional.empty());
+        String expected = "";
+        try {
+            consumptionService.consumptionCredit(SKU_CONSUMPTION, 120l);
+        }catch (Exception e){
+            expected = e.getMessage();
+        }
+        String actual = "SkuConsumption não encontrado.";
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("[method=consumptionCredit] When consumption Credit insuficiente.")
+    void test_consumptionCredit_credit_error(){
+        when(consumptionAdapter.getConsumption(Mockito.anyString())).thenReturn(ConsumptionFactory.getOptionalConsumptionDTO());
+        String expected = "";
+        try {
+            consumptionService.consumptionCredit(SKU_CONSUMPTION, 260l);
+        }catch (Exception e){
+            expected = e.getMessage();
+        }
+        String actual = "Credito Insuficiente.";
+        Assertions.assertEquals(expected, actual);
+    }
+
 }
