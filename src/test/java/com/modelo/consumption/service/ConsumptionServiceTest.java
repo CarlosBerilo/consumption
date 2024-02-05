@@ -15,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,7 +68,7 @@ public class ConsumptionServiceTest {
     }
 
     @Test
-    @DisplayName("[method=createConsumption] When createConsumption success")
+    @DisplayName("[method=createConsumption] When consumption Credit success")
     void test_consumptionCredit_ok(){
         when(consumptionAdapter.getConsumption(Mockito.anyString())).thenReturn(ConsumptionFactory.getOptionalConsumptionDTO());
         when(consumptionMapper.toConsumptionDTO(ConsumptionFactory.getConsumptionCredit())).thenReturn(ConsumptionFactory.getConsumptionDTOCredit());
@@ -77,5 +79,12 @@ public class ConsumptionServiceTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    @Test
+    @DisplayName("[method=deleteConsumption] When delete Consumption success")
+    void test_deleteConsumption_ok(){
+        doNothing().when(consumptionAdapter).deleteConsumption(Mockito.anyString());
+        consumptionService.deleteConsumption(SKU_CONSUMPTION);
+        verify(consumptionAdapter).deleteConsumption(SKU_CONSUMPTION);
+    }
 
 }
